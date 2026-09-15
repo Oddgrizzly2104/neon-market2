@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Casino & Trading</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #08080d;
+    color: white;
+}
+
+nav {
+    background: #11111a;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #292936;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+nav a {
+    color: #aaa;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+nav a:hover {
+    color: #00ff88;
+}
+
+.balance {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: radial-gradient(circle at top, #14251d, #08080d 65%);
+}
+
+.hero h1 {
+    font-size: 52px;
+    margin: 0;
+}
+
+.hero p {
+    color: #aaa;
+    font-size: 18px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-top: 45px;
+}
+
+.card {
+    background: #11111a;
+    border: 1px solid #292936;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(0,255,136,0.04);
+}
+
+button {
+    background: #00ff88;
+    color: #06110b;
+    border: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 4px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+button.red {
+    background: #ff3b5c;
+    color: white;
+}
+
+button.blue {
+    background: #4c8dff;
+    color: white;
+}
+
+input,
+select {
+    background: #08080d;
+    color: white;
+    border: 1px solid #333341;
+    padding: 11px;
+    border-radius: 8px;
+    margin: 4px;
+}
+
+.result {
+    color: #00ff88;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+.warning {
+    color: #ffcc00;
+}
+
+.stock-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+#stockSearch {
+    width: 300px;
+}
+
+.stock-table-wrapper {
+    overflow-x: auto;
+    max-height: 650px;
+    overflow-y: auto;
+    border: 1px solid #292936;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #181821;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 14px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #22222d;
+}
+
+tr:hover {
+    background: #15151e;
+}
+
+.green {
+    color: #00ff88;
+}
+
+.red-text {
+    color: #ff4d67;
+}
+
+.stock-symbol {
+    font-weight: bold;
+    color: white;
+}
+
+.stock-name {
+    color: #999;
+}
+
+.status {
+    padding: 10px;
+    border-radius: 8px;
+    background: #0d1712;
+    border: 1px solid #1d4934;
+    color: #00ff88;
+    margin-bottom: 15px;
+}
+
+footer {
+    text-align: center;
+    color: #666;
+    padding: 50px 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.big-number {
+    font-size: 30px;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+@media(max-width: 700px) {
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    #stockSearch {
+        width: 100%;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">⚡ NEON MARKET</div>
+
+    <div>
+        <a href="#casino">Casino</a>
+        <a href="#stocks">Stocks</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#admin">Admin</a>
+    </div>
+
+    <div class="balance">
+        💰 $<span id="balance">1000.00</span>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>NEON CASINO & TRADING</h1>
+    <p>Fake-money casino + stock market simulator</p>
+    <p class="warning">
+        ⚠️ This is a game using fake money. No real trading takes place.
+    </p>
+</section>
+
+<div class="container">
+
+<!-- ================= CASINO ================= -->
+
+<h2 class="section-title" id="casino">🎰 Casino</h2>
+
+<div class="card-grid">
+
+<!-- BLACKJACK -->
+
+<div class="card">
+    <h2>🃏 Blackjack</h2>
+
+    <input
+        type="number"
+        id="blackjackBet"
+        placeholder="Bet"
+        min="1"
+    >
+
+    <br>
+
+    <button onclick="startBlackjack()">Deal</button>
+    <button onclick="hit()" class="blue">Hit</button>
+    <button onclick="stand()">Stand</button>
+
+    <p id="blackjackCards">Deal a hand.</p>
+    <p class="result" id="blackjackResult"></p>
+</div>
+
+<!-- ROULETTE -->
+
+<div class="card">
+    <h2>🎡 Roulette</h2>
+
+    <input
+        type="number"
+        id="rouletteBet"
+        placeholder="Bet"
+        min="1"
+    >
+
+    <select id="rouletteChoice">
+        <option value="red">Red</option>
+        <option value="black">Black</option>
+        <option value="green">Green / 0</option>
+    </select>
+
+    <br>
+
+    <button onclick="playRoulette()">Spin</button>
+
+    <p id="rouletteResult" class="result"></p>
+</div>
+
+<!-- COIN FLIP -->
+
+<div class="card">
+    <h2>🪙 Coin Flip</h2>
+
+    <input
+        type="number"
+        id="coinBet"
+        placeholder="Bet"
+        min="1"
+    >
+
+    <select id="coinChoice">
+        <option value="heads">Heads</option>
+        <option value="tails">Tails</option>
+    </select>
+
+    <br>
+
+    <button onclick="flipCoin()">Flip</button>
+
+    <p id="coinResult" class="result"></p>
+</div>
+
+</div>
+
+
+<!-- ================= STOCK MARKET ================= -->
+
+<h2 class="section-title" id="stocks">📈 Stock Market</h2>
+
+<div class="card">
+
+    <div class="status">
+        📡 Market feed:
+        <span id="marketStatus">Connecting...</span>
+        <br>
+        Last update:
+        <span id="lastUpdate">Never</span>
+    </div>
+
+    <p>
+        Prices refresh automatically every 15 seconds using publicly
+        available market data.
+    </p>
+
+    <div class="stock-controls">
+
+        <input
+            id="stockSearch"
+            type="text"
+            placeholder="Search company or ticker..."
+            oninput="renderStocks()"
+        >
+
+        <select id="sortStocks" onchange="renderStocks()">
+            <option value="symbol">Ticker</option>
+            <option value="price">Price</option>
+            <option value="change">Change %</option>
+            <option value="owned">Owned</option>
+        </select>
+
+        <button onclick="loadAllPrices()">
+            🔄 Refresh Prices
+        </button>
+
+    </div>
+
+    <div class="stock-table-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Company</th>
+                    <th>Price</th>
+                    <th>Change</th>
+                    <th>Owned</th>
+                    <th>Buy</th>
+                    <th>Sell</th>
+                </tr>
+            </thead>
+
+            <tbody id="stockTable"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PORTFOLIO ================= -->
+
+<h2 class="section-title" id="portfolio">💼 Portfolio</h2>
+
+<div class="card">
+
+    <div class="big-number">
+        $<span id="portfolioValue">0.00</span>
+    </div>
+
+    <p>Total value of your stock holdings.</p>
+
+    <div id="portfolioList"></div>
+
+</div>
+
+
+<!-- ================= ADMIN ================= -->
+
+<h2 class="section-title" id="admin">🔐 Admin</h2>
+
+<div class="card">
+
+    <p>Fake-money administration.</p>
+
+    <input
+        type="password"
+        id="adminCode"
+        placeholder="Admin code"
+    >
+
+    <input
+        type="number"
+        id="adminAmount"
+        placeholder="Amount"
+        min="1"
+    >
+
+    <br>
+
+    <button onclick="adminRedeem()">
+        💰 Redeem
+    </button>
+
+    <button onclick="resetGame()" class="red">
+        🗑 Reset Game
+    </button>
+
+    <p id="adminResult" class="result"></p>
+
+</div>
+
+</div>
+
+<footer>
+    NEON MARKET — Fake-money school/game project
+</footer>
+
+
+<script>
+
+/* =========================================================
+   GAME SAVE DATA
+========================================================= */
+
+let balance = Number(localStorage.getItem("neonBalance"));
+
+if (!Number.isFinite(balance)) {
+    balance = 1000;
+}
+
+let ownedStocks =
+    JSON.parse(localStorage.getItem("neonOwnedStocks") || "{}");
+
+
+function saveGame() {
+
+    localStorage.setItem(
+        "neonBalance",
+        balance
+    );
+
+    localStorage.setItem(
+        "neonOwnedStocks",
+        JSON.stringify(ownedStocks)
+    );
+}
+
+
+function updateBalance() {
+
+    document.getElementById("balance").textContent =
+        balance.toFixed(2);
+
+    updatePortfolio();
+
+    saveGame();
+}
+
+
+/* =========================================================
+   200 STOCKS
+========================================================= */
+
+const STOCKS = [
+
+["AAPL","Apple"],
+["MSFT","Microsoft"],
+["NVDA","NVIDIA"],
+["AMZN","Amazon"],
+["GOOGL","Alphabet"],
+["META","Meta Platforms"],
+["AVGO","Broadcom"],
+["TSLA","Tesla"],
+["GOOG","Alphabet"],
+["BRK-B","Berkshire Hathaway"],
+["WMT","Walmart"],
+["LLY","Eli Lilly"],
+["JPM","JPMorgan Chase"],
+["V","Visa"],
+["ORCL","Oracle"],
+["MA","Mastercard"],
+["NFLX","Netflix"],
+["XOM","Exxon Mobil"],
+["COST","Costco"],
+["JNJ","Johnson & Johnson"],
+["HD","Home Depot"],
+["PG","Procter & Gamble"],
+["ABBV","AbbVie"],
+["BAC","Bank of America"],
+["KO","Coca-Cola"],
+["CRM","Salesforce"],
+["CVX","Chevron"],
+["AMD","AMD"],
+["GE","GE Aerospace"],
+["CSCO","Cisco"],
+["IBM","IBM"],
+["WFC","Wells Fargo"],
+["CAT","Caterpillar"],
+["MRK","Merck"],
+["PM","Philip Morris"],
+["AXP","American Express"],
+["MU","Micron"],
+["GS","Goldman Sachs"],
+["RTX","RTX"],
+["DIS","Disney"],
+["MS","Morgan Stanley"],
+["TMO","Thermo Fisher"],
+["INTU","Intuit"],
+["ISRG","Intuitive Surgical"],
+["QCOM","Qualcomm"],
+["PEP","PepsiCo"],
+["AMAT","Applied Materials"],
+["UBER","Uber"],
+["BKNG","Booking Holdings"],
+["LOW","Lowe's"],
+["PFE","Pfizer"],
+["HON","Honeywell"],
+["UNH","UnitedHealth"],
+["BLK","BlackRock"],
+["DE","Deere"],
+["LMT","Lockheed Martin"],
+["ADBE","Adobe"],
+["SYK","Stryker"],
+["TJX","TJX Companies"],
+["VRTX","Vertex Pharmaceuticals"],
+["GILD","Gilead Sciences"],
+["PANW","Palo Alto Networks"],
+["ADI","Analog Devices"],
+["REGN","Regeneron"],
+["MMC","Marsh McLennan"],
+["C","Citigroup"],
+["MDT","Medtronic"],
+["CVS","CVS Health"],
+["MO","Altria"],
+["SO","Southern Company"],
+["DUK","Duke Energy"],
+["COP","ConocoPhillips"],
+["SLB","SLB"],
+["USB","U.S. Bancorp"],
+["PNC","PNC Financial"],
+["TGT","Target"],
+["EL","Estee Lauder"],
+["MMM","3M"],
+["UPS","UPS"],
+["FDX","FedEx"],
+["NKE","Nike"],
+["SBUX","Starbucks"],
+["MCD","McDonald's"],
+["CMCSA","Comcast"],
+["T","AT&T"],
+["VZ","Verizon"],
+["CHTR","Charter Communications"],
+["PYPL","PayPal"],
+["SQ","Block"],
+["SHOP","Shopify"],
+["SNOW","Snowflake"],
+["PLTR","Palantir"],
+["CRWD","CrowdStrike"],
+["FTNT","Fortinet"],
+["NOW","ServiceNow"],
+["INTC","Intel"],
+["TXN","Texas Instruments"],
+["LRCX","Lam Research"],
+["KLAC","KLA"],
+["MRVL","Marvell Technology"],
+["ARM","Arm Holdings"],
+["SMCI","Super Micro Computer"],
+["MELI","MercadoLibre"],
+["ABNB","Airbnb"],
+["DASH","DoorDash"],
+["COIN","Coinbase"],
+["HOOD","Robinhood"],
+["RBLX","Roblox"],
+["EA","Electronic Arts"],
+["TTWO","Take-Two Interactive"],
+["SONY","Sony"],
+["SPOT","Spotify"],
+["ROKU","Roku"],
+["LYV","Live Nation"],
+["DELL","Dell Technologies"],
+["HPQ","HP"],
+["HPE","Hewlett Packard Enterprise"],
+["CSX","CSX"],
+["UNP","Union Pacific"],
+["NSC","Norfolk Southern"],
+["WM","Waste Management"],
+["RSG","Republic Services"],
+["ETN","Eaton"],
+["EMR","Emerson Electric"],
+["PH","Parker-Hannifin"],
+["ITW","Illinois Tool Works"],
+["GD","General Dynamics"],
+["NOC","Northrop Grumman"],
+["BA","Boeing"],
+["DAL","Delta Air Lines"],
+["UAL","United Airlines"],
+["AAL","American Airlines"],
+["LUV","Southwest Airlines"],
+["MAR","Marriott"],
+["HLT","Hilton"],
+["ABT","Abbott Laboratories"],
+["BMY","Bristol Myers Squibb"],
+["AMGN","Amgen"],
+["MRNA","Moderna"],
+["ZTS","Zoetis"],
+["CI","The Cigna Group"],
+["ELV","Elevance Health"],
+["HUM","Humana"],
+["BSX","Boston Scientific"],
+["EW","Edwards Lifesciences"],
+["DHR","Danaher"],
+["BDX","Becton Dickinson"],
+["IQV","IQVIA"],
+["AON","Aon"],
+["CB","Chubb"],
+["PGR","Progressive"],
+["TRV","Travelers"],
+["MET","MetLife"],
+["PRU","Prudential"],
+["SPGI","S&P Global"],
+["MCO","Moody's"],
+["ICE","Intercontinental Exchange"],
+["CME","CME Group"],
+["NDAQ","Nasdaq"],
+["FIS","Fidelity National Information Services"],
+["GPN","Global Payments"],
+["ADP","ADP"],
+["PAYX","Paychex"],
+["ROST","Ross Stores"],
+["ORLY","O'Reilly Automotive"],
+["AZO","AutoZone"],
+["BBY","Best Buy"],
+["DG","Dollar General"],
+["DLTR","Dollar Tree"],
+["YUM","Yum! Brands"],
+["CMG","Chipotle"],
+["SYY","Sysco"],
+["GIS","General Mills"],
+["KHC","Kraft Heinz"],
+["HSY","Hershey"],
+["MDLZ","Mondelez"],
+["CL","Colgate-Palmolive"],
+["KMB","Kimberly-Clark"],
+["ELF","e.l.f. Beauty"],
+["LULU","Lululemon"],
+["DECK","Deckers Brands"],
+["ON","ON Semiconductor"],
+["NXPI","NXP Semiconductors"],
+["MCHP","Microchip Technology"],
+["APH","Amphenol"],
+["CDNS","Cadence Design Systems"],
+["SNPS","Synopsys"],
+["FTV","Fortive"],
+["ROP","Roper Technologies"],
+["CTAS","Cintas"],
+["FAST","Fastenal"],
+["ODFL","Old Dominion Freight"],
+["PCAR","PACCAR"],
+["PAYC","Paycom"],
+["TEAM","Atlassian"],
+["DDOG","Datadog"],
+["ZS","Zscaler"],
+["NET","Cloudflare"],
+["OKTA","Okta"],
+["MDB","MongoDB"],
+["DOCU","DocuSign"],
+["TWLO","Twilio"],
+["F","Ford"],
+["GM","General Motors"],
+["RIVN","Rivian"],
+["LCID","Lucid"],
+["SOFI","SoFi Technologies"]
+
+];
+
+
+/* =========================================================
+   STOCK DATA
+========================================================= */
+
+let market = {};
+
+STOCKS.forEach(([symbol, name]) => {
+
+    market[symbol] = {
+        symbol: symbol,
+        name: name,
+        price: 0,
+        previous: 0,
+        change: 0,
+        changePercent: 0,
+        loaded: false
+    };
+
+});
+
+
+/* =========================================================
+   LOAD STOCK PRICE
+========================================================= */
+
+async function loadStockPrice(symbol) {
+
+    try {
+
+        /*
+            Yahoo Finance chart endpoint.
+
+            This does NOT require an API key.
+
+            It may be delayed and should not be treated
+            as exchange-grade real-time data.
+        */
+
+        const url =
+            "https://query1.finance.yahoo.com/v8/finance/chart/" +
+            encodeURIComponent(symbol) +
+            "?interval=1m&range=1d";
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        const result =
+            data.chart.result &&
+            data.chart.result[0];
+
+        if (!result) {
+            throw new Error("No data");
+        }
+
+        const meta = result.meta;
+
+        const price =
+            Number(
+                meta.regularMarketPrice ||
+                meta.postMarketPrice ||
+                meta.preMarketPrice
+            );
+
+        const previous =
+            Number(
+                meta.previousClose ||
+                meta.chartPreviousClose
+            );
+
+        if (!Number.isFinite(price)) {
+            throw new Error("Invalid price");
+        }
+
+        market[symbol].previous =
+            previous;
+
+        market[symbol].price =
+            price;
+
+        market[symbol].change =
+            price - previous;
+
+        market[symbol].changePercent =
+            previous
+                ? ((price - previous) / previous) * 100
+                : 0;
+
+        market[symbol].loaded = true;
+
+        return true;
+
+    } catch (error) {
+
+        console.log(
+            "Could not load " + symbol,
+            error
+        );
+
+        return false;
+    }
+}
+
+
+/* =========================================================
+   LOAD ALL 200 PRICES
+========================================================= */
+
+let loadingPrices = false;
+
+async function loadAllPrices() {
+
+    if (loadingPrices) return;
+
+    loadingPrices = true;
+
+    document.getElementById(
+        "marketStatus"
+    ).textContent = "Updating prices...";
+
+    /*
+        We do batches so the browser doesn't
+        fire 200 requests at exactly the same time.
+    */
+
+    const batchSize = 10;
+
+    for (
+        let i = 0;
+        i < STOCKS.length;
+        i += batchSize
+    ) {
+
+        const batch =
+            STOCKS.slice(
+                i,
+                i + batchSize
+            );
+
+        await Promise.all(
+            batch.map(
+                stock =>
+                    loadStockPrice(stock[0])
+            )
+        );
+
+        renderStocks();
+        updatePortfolio();
+    }
+
+    document.getElementById(
+        "marketStatus"
+    ).textContent =
+        "Connected • Latest available prices loaded";
+
+    document.getElementById(
+        "lastUpdate"
+    ).textContent =
+        new Date().toLocaleTimeString();
+
+    loadingPrices = false;
+
+    renderStocks();
+    updatePortfolio();
+}
+
+
+/* =========================================================
+   RENDER STOCK TABLE
+========================================================= */
+
+function renderStocks() {
+
+    const table =
+        document.getElementById(
+            "stockTable"
+        );
+
+    const search =
+        document.getElementById(
+            "stockSearch"
+        ).value
+        .toLowerCase()
+        .trim();
+
+    const sort =
+        document.getElementById(
+            "sortStocks"
+        ).value;
+
+    let list =
+        STOCKS
+        .filter(([symbol, name]) =>
+            symbol.toLowerCase().includes(search) ||
+            name.toLowerCase().includes(search)
+        )
+        .map(([symbol, name]) =>
+            market[symbol]
+        );
+
+
+    if (sort === "symbol") {
+
+        list.sort(
+            (a,b) =>
+                a.symbol.localeCompare(b.symbol)
+        );
+
+    } else if (sort === "price") {
+
+        list.sort(
+            (a,b) =>
+                b.price - a.price
+        );
+
+    } else if (sort === "change") {
+
+        list.sort(
+            (a,b) =>
+                b.changePercent -
+                a.changePercent
+        );
+
+    } else if (sort === "owned") {
+
+        list.sort(
+            (a,b) =>
+                (ownedStocks[b.symbol] || 0) -
+                (ownedStocks[a.symbol] || 0)
+        );
+    }
+
+
+    table.innerHTML = "";
+
+
+    for (const stock of list) {
+
+        const owned =
+            Number(
+                ownedStocks[stock.symbol] || 0
+            );
+
+        const row =
+            document.createElement("tr");
+
+
+        let priceText =
+            stock.loaded
+            ? "$" + stock.price.toFixed(2)
+            : "Loading...";
+
+
+        let changeText =
+            stock.loaded
+            ? (
+                (stock.change >= 0 ? "+" : "") +
+                stock.change.toFixed(2) +
+                " (" +
+                (stock.changePercent >= 0 ? "+" : "") +
+                stock.changePercent.toFixed(2) +
+                "%)"
+            )
+            : "-";
+
+
+        let changeClass =
+            stock.change >= 0
+            ? "green"
+            : "red-text";
+
+
+        row.innerHTML = `
+
+            <td>
+                <span class="stock-symbol">
+                    ${stock.symbol}
+                </span>
+            </td>
+
+            <td>
+                <span class="stock-name">
+                    ${stock.name}
+                </span>
+            </td>
+
+            <td>
+                <strong>
+                    ${priceText}
+                </strong>
+            </td>
+
+            <td class="${changeClass}">
+                ${changeText}
+            </td>
+
+            <td>
+                ${owned}
+            </td>
+
+            <td>
+                <button
+                    onclick="buyStock('${stock.symbol}')"
+                >
+                    Buy
+                </button>
+            </td>
+
+            <td>
+                <button
+                    class="red"
+                    onclick="sellStock('${stock.symbol}')"
+                >
+                    Sell
+                </button>
+            </td>
+
+        `;
+
+        table.appendChild(row);
+    }
+}
+
+
+/* =========================================================
+   BUY STOCK
+========================================================= */
+
+function buyStock(symbol) {
+
+    const stock =
+        market[symbol];
+
+    if (!stock.loaded || stock.price <= 0) {
+
+        alert(
+            "Price hasn't loaded yet."
+        );
+
+        return;
+    }
+
+    const amount =
+        Number(
+            prompt(
+                "How many shares of " +
+                symbol +
+                " do you want to buy?"
+            )
+        );
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        return;
+    }
+
+
+    if (!Number.isInteger(amount)) {
+
+        alert(
+            "This game only allows whole shares."
+        );
+
+        return;
+    }
+
+
+    const cost =
+        amount * stock.price;
+
+
+    if (cost > balance) {
+
+        alert(
+            "You don't have enough fake money."
+        );
+
+        return;
+    }
+
+
+    balance -= cost;
+
+    ownedStocks[symbol] =
+        Number(
+            ownedStocks[symbol] || 0
+        ) + amount;
+
+
+    updateBalance();
+    renderStocks();
+
+}
+
+
+/* =========================================================
+   SELL STOCK
+========================================================= */
+
+function sellStock(symbol) {
+
+    const stock =
+        market[symbol];
+
+    const owned =
+        Number(
+            ownedStocks[symbol] || 0
+        );
+
+
+    if (owned <= 0) {
+
+        alert(
+            "You don't own any " +
+            symbol +
+            "."
+        );
+
+        return;
+    }
+
+
+    if (!stock.loaded || stock.price <= 0) {
+
+        alert(
+            "Price hasn't loaded yet."
+        );
+
+        return;
+    }
+
+
+    const amount =
+        Number(
+            prompt(
+                "How many shares of " +
+                symbol +
+                " do you want to sell?\n\nYou own: " +
+                owned
+            )
+        );
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        return;
+    }
+
+
+    if (
+        !Number.isInteger(amount)
+    ) {
+
+        alert(
+            "This game only allows whole shares."
+        );
+
+        return;
+    }
+
+
+    if (amount > owned) {
+
+        alert(
+            "You don't own that many shares."
+        );
+
+        return;
+    }
+
+
+    balance +=
+        amount * stock.price;
+
+
+    ownedStocks[symbol] =
+        owned - amount;
+
+
+    if (
+        ownedStocks[symbol] <= 0
+    ) {
+
+        delete ownedStocks[symbol];
+    }
+
+
+    updateBalance();
+    renderStocks();
+
+}
+
+
+/* =========================================================
+   PORTFOLIO
+========================================================= */
+
+function updatePortfolio() {
+
+    let total = 0;
+
+    const list =
+        document.getElementById(
+            "portfolioList"
+        );
+
+    list.innerHTML = "";
+
+
+    for (const symbol in ownedStocks) {
+
+        const amount =
+            Number(
+                ownedStocks[symbol]
+            );
+
+        const stock =
+            market[symbol];
+
+
+        if (
+            !stock ||
+            !stock.loaded
+        ) {
+
+            continue;
+        }
+
+
+        const value =
+            amount * stock.price;
+
+
+        total += value;
+
+
+        const item =
+            document.createElement("div");
+
+        item.className = "card";
+
+
+        item.innerHTML = `
+
+            <strong>
+                ${symbol}
+            </strong>
+
+            — ${amount} shares
+
+            × $${stock.price.toFixed(2)}
+
+            =
+
+            <span class="green">
+                $${value.toFixed(2)}
+            </span>
+
+        `;
+
+
+        list.appendChild(item);
+    }
+
+
+    document.getElementById(
+        "portfolioValue"
+    ).textContent =
+        total.toFixed(2);
+
+
+    if (
+        list.innerHTML === ""
+    ) {
+
+        list.innerHTML =
+            "<p>You don't own any stocks yet.</p>";
+    }
+
+}
+
+
+/* =========================================================
+   BLACKJACK
+========================================================= */
+
+let deck = [];
+let playerHand = [];
+let dealerHand = [];
+let blackjackBet = 0;
+let blackjackActive = false;
+
+
+function createDeck() {
+
+    const suits =
+        ["♠","♥","♦","♣"];
+
+    const values =
+        [
+            "A","2","3","4","5","6",
+            "7","8","9","10",
+            "J","Q","K"
+        ];
+
+
+    deck = [];
+
+
+    for (const suit of suits) {
+
+        for (const value of values) {
+
+            deck.push({
+                value: value,
+                suit: suit
+            });
+
+        }
+    }
+
+
+    shuffleDeck();
+}
+
+
+function shuffleDeck() {
+
+    for (
+        let i = deck.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            deck[i],
+            deck[j]
+        ] =
+        [
+            deck[j],
+            deck[i]
+        ];
+    }
+}
+
+
+function drawCard() {
+
+    if (deck.length === 0) {
+
+        createDeck();
+    }
+
+    return deck.pop();
+}
+
+
+function cardValue(card) {
+
+    if (
+        ["J","Q","K"]
+        .includes(card.value)
+    ) {
+
+        return 10;
+    }
+
+
+    if (
+        card.value === "A"
+    ) {
+
+        return 11;
+    }
+
+
+    return Number(
+        card.value
+    );
+}
+
+
+function calculateHand(hand) {
+
+    let total = 0;
+    let aces = 0;
+
+
+    for (const card of hand) {
+
+        total +=
+            cardValue(card);
+
+        if (
+            card.value === "A"
+        ) {
+
+            aces++;
+        }
+    }
+
+
+    while (
+        total > 21 &&
+        aces > 0
+    ) {
+
+        total -= 10;
+        aces--;
+    }
+
+
+    return total;
+}
+
+
+function displayHand(hand) {
+
+    return hand
+        .map(
+            card =>
+                card.value +
+                card.suit
+        )
+        .join("  ");
+}
+
+
+function startBlackjack() {
+
+    if (blackjackActive) {
+
+        alert(
+            "Finish your current game first."
+        );
+
+        return;
+    }
+
+
+    const bet =
+        Number(
+            document.getElementById(
+                "blackjackBet"
+            ).value
+        );
+
+
+    if (
+        !Number.isFinite(bet) ||
+        bet <= 0 ||
+        bet > balance
+    ) {
+
+        alert(
+            "Invalid bet."
+        );
+
+        return;
+    }
+
+
+    createDeck();
+
+
+    balance -= bet;
+
+    blackjackBet = bet;
+
+    blackjackActive = true;
+
+
+    playerHand = [
+        drawCard(),
+        drawCard()
+    ];
+
+
+    dealerHand = [
+        drawCard(),
+        drawCard()
+    ];
+
+
+    showBlackjack(false);
+
+
+    const playerTotal =
+        calculateHand(
+            playerHand
+        );
+
+
+    if (
+        playerTotal === 21
+    ) {
+
+        blackjackActive = false;
+
+
+        /*
+            Blackjack pays 3:2.
+            Bet was already removed.
+            Add original bet + 1.5x profit.
+        */
+
+        const winnings =
+            blackjackBet * 2.5;
+
+
+        balance += winnings;
+
+
+        document.getElementById(
+            "blackjackResult"
+        ).textContent =
+            "🎉 BLACKJACK! You won $" +
+            (blackjackBet * 1.5).toFixed(2);
+
+
+        blackjackBet = 0;
+
+
+        updateBalance();
+    }
+
+}
+
+
+function showBlackjack(
+    revealDealer
+) {
+
+    const playerTotal =
+        calculateHand(
+            playerHand
+        );
+
+
+    let dealerText;
+
+
+    if (revealDealer) {
+
+        dealerText =
+            displayHand(
+                dealerHand
+            ) +
+            " = " +
+            calculateHand(
+                dealerHand
+            );
+
+    } else {
+
+        dealerText =
+            dealerHand[0].value +
+            dealerHand[0].suit +
+            "  🂠";
+    }
+
+
+    document.getElementById(
+        "blackjackCards"
+    ).textContent =
+        "You: " +
+        displayHand(playerHand) +
+        " = " +
+        playerTotal +
+        " | Dealer: " +
+        dealerText;
+}
+
+
+function hit() {
+
+    if (!blackjackActive) {
+
+        alert(
+            "Deal a hand first."
+        );
+
+        return;
+    }
+
+
+    playerHand.push(
+        drawCard()
+    );
+
+
+    const total =
+        calculateHand(
+            playerHand
+        );
+
+
+    showBlackjack(false);
+
+
+    if (total > 21) {
+
+        blackjackActive = false;
+
+
+        document.getElementById(
+            "blackjackResult"
+        ).textContent =
+            "💥 BUST! You had " +
+            total +
+            ".";
+
+
+        blackjackBet = 0;
+
+    }
+
+
+    updateBalance();
+}
+
+
+function stand() {
+
+    if (!blackjackActive) {
+
+        alert(
+            "Deal a hand first."
+        );
+
+        return;
+    }
+
+
+    while (
+        calculateHand(
+            dealerHand
+        ) < 17
+    ) {
+
+        dealerHand.push(
+            drawCard()
+        );
+    }
+
+
+    const playerTotal =
+        calculateHand(
+            playerHand
+        );
+
+
+    const dealerTotal =
+        calculateHand(
+            dealerHand
+        );
+
+
+    showBlackjack(true);
+
+
+    if (
+        dealerTotal > 21 ||
+        playerTotal > dealerTotal
+    ) {
+
+        balance +=
+            blackjackBet * 2;
+
+
+        document.getElementById(
+            "blackjackResult"
+        ).textContent =
+            "🎉 YOU WIN! Dealer had " +
+            dealerTotal +
+            ". You won $" +
+            blackjackBet.toFixed(2);
+
+    } else if (
+        playerTotal === dealerTotal
+    ) {
+
+        balance +=
+            blackjackBet;
+
+
+        document.getElementById(
+            "blackjackResult"
+        ).textContent =
+            "🤝 PUSH! Your bet was returned.";
+
+    } else {
+
+        document.getElementById(
+            "blackjackResult"
+        ).textContent =
+            "💀 DEALER WINS! Dealer had " +
+            dealerTotal +
+            ".";
+
+    }
+
+
+    blackjackActive = false;
+    blackjackBet = 0;
+
+
+    updateBalance();
+}
+
+
+/* =========================================================
+   ROULETTE
+========================================================= */
+
+function playRoulette() {
+
+    const bet =
+        Number(
+            document.getElementById(
+                "rouletteBet"
+            ).value
+        );
+
+
+    const choice =
+        document.getElementById(
+            "rouletteChoice"
+        ).value;
+
+
+    if (
+        !Number.isFinite(bet) ||
+        bet <= 0 ||
+        bet > balance
+    ) {
+
+        alert(
+            "Invalid bet."
+        );
+
+        return;
+    }
+
+
+    balance -= bet;
+
+
+    const number =
+        Math.floor(
+            Math.random() * 37
+        );
+
+
+    let colour;
+
+
+    if (number === 0) {
+
+        colour = "green";
+
+    } else if (
+        number % 2 === 0
+    ) {
+
+        colour = "black";
+
+    } else {
+
+        colour = "red";
+    }
+
+
+    if (colour === choice) {
+
+        let payout;
+
+
+        if (
+            choice === "green"
+        ) {
+
+            payout = bet * 36;
+
+        } else {
+
+            payout = bet * 2;
+        }
+
+
+        balance += payout;
+
+
+        document.getElementById(
+            "rouletteResult"
+        ).textContent =
+            "🎉 " +
+            number +
+            " " +
+            colour +
+            "! You won $" +
+            (payout - bet).toFixed(2);
+
+    } else {
+
+        document.getElementById(
+            "rouletteResult"
+        ).textContent =
+            "❌ " +
+            number +
+            " " +
+            colour +
+            ". You lost $" +
+            bet.toFixed(2);
+    }
+
+
+    updateBalance();
+}
+
+
+/* =========================================================
+   COIN FLIP
+========================================================= */
+
+function flipCoin() {
+
+    const bet =
+        Number(
+            document.getElementById(
+                "coinBet"
+            ).value
+        );
+
+
+    const choice =
+        document.getElementById(
+            "coinChoice"
+        ).value;
+
+
+    if (
+        !Number.isFinite(bet) ||
+        bet <= 0 ||
+        bet > balance
+    ) {
+
+        alert(
+            "Invalid bet."
+        );
+
+        return;
+    }
+
+
+    balance -= bet;
+
+
+    const result =
+        Math.random() < 0.5
+        ? "heads"
+        : "tails";
+
+
+    if (
+        result === choice
+    ) {
+
+        balance +=
+            bet * 2;
+
+
+        document.getElementById(
+            "coinResult"
+        ).textContent =
+            "🪙 " +
+            result.toUpperCase() +
+            "! You won $" +
+            bet.toFixed(2);
+
+    } else {
+
+        document.getElementById(
+            "coinResult"
+        ).textContent =
+            "🪙 " +
+            result.toUpperCase() +
+            "! You lost $" +
+            bet.toFixed(2);
+    }
+
+
+    updateBalance();
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function adminRedeem() {
+
+    const code =
+        document.getElementById(
+            "adminCode"
+        ).value;
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "adminAmount"
+            ).value
+        );
+
+
+    /*
+        CHANGE THIS CODE
+        to whatever you want.
+    */
+
+    const ADMIN_CODE =
+        "NEONADMIN";
+
+
+    if (
+        code !== ADMIN_CODE
+    ) {
+
+        document.getElementById(
+            "adminResult"
+        ).textContent =
+            "❌ Wrong admin code.";
+
+        return;
+    }
+
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        document.getElementById(
+            "adminResult"
+        ).textContent =
+            "❌ Invalid amount.";
+
+        return;
+    }
+
+
+    balance += amount;
+
+
+    document.getElementById(
+        "adminResult"
+    ).textContent =
+        "✅ Added $" +
+        amount.toFixed(2) +
+        " fake money.";
+
+
+    updateBalance();
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetGame() {
+
+    const confirmReset =
+        confirm(
+            "Reset your entire game?\n\n" +
+            "Your fake money and stock portfolio " +
+            "will be deleted."
+        );
+
+
+    if (!confirmReset) {
+        return;
+    }
+
+
+    localStorage.removeItem(
+        "neonBalance"
+    );
+
+    localStorage.removeItem(
+        "neonOwnedStocks"
+    );
+
+
+    balance = 1000;
+
+    ownedStocks = {};
+
+
+    updateBalance();
+    renderStocks();
+    updatePortfolio();
+
+
+    document.getElementById(
+        "adminResult"
+    ).textContent =
+        "Game reset.";
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+updateBalance();
+
+renderStocks();
+
+updatePortfolio();
+
+loadAllPrices();
+
+
+/*
+    Refresh every 15 seconds.
+
+    This is NOT guaranteed exchange-real-time.
+    It simply gets the latest available data
+    from the public endpoint.
+*/
+
+setInterval(
+    loadAllPrices,
+    15000
+);
+
+</script>
+
+</body>
+</html>
